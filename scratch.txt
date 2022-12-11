@@ -1,0 +1,60 @@
+//copy and pasted from old project
+struct AABB {
+    xmin: u32,
+    xmax: u32,
+    ymin: u32,
+    ymax: u32
+}
+
+impl AABB {
+    fn new(xmin: u32, xmax: u32, ymin: u32, ymax: u32) -> Self {
+        AABB{
+            xmin,
+            xmax,
+            ymin,
+            ymax
+        }
+    }
+
+    fn from_points(p1: (u32, u32), p2: (u32, u32), p3: (u32, u32), p4: (u32, u32)) -> Self {
+        let (x1, y1) = p1; 
+        let (x2, y2) = p2; 
+        let (x3, y3) = p3; 
+        let (x4, y4) = p4;
+        let xmax = *[x1, x2, x3, x4].iter().max().unwrap(); 
+        let ymax = *[y1, y2, y3, y4].iter().max().unwrap(); 
+        let xmin = *[x1, x2, x3, x4].iter().min().unwrap(); 
+        let ymin = *[y1, y2, y3, y4].iter().min().unwrap();
+
+        AABB{
+            xmin,
+            xmax,
+            ymin,
+            ymax
+        }
+    }
+
+    fn from_corners(p1: (u32, u32), p2: (u32, u32)) -> Self {
+        let (x1, y1) = p1;
+        let (x2, y2) = p2;
+        let xmin = x1.min(x2);
+        let xmax = x1.max(x2);
+        let ymin = y1.min(y2);
+        let ymax = y1.max(y2);
+
+        AABB{
+            xmin,
+            xmax,
+            ymin,
+            ymax
+        }
+    }
+
+    fn intersect(&self, other: &Self) -> bool {
+        !(other.xmin > self.xmax || other.xmax < self.xmin || other.ymax > self.ymin || other.ymin > self.ymax)
+    }
+}
+
+fn main() {
+    let input: Vec<&str> = include_str!("../input/day5.txt").lines().collect();
+}
